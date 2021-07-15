@@ -2,5 +2,5 @@
 
 make tests
 make lint
-git add . && git commit -am '0.0.3' && git push
-git tag v0.0.3 && git push --tags
+git add . && git commit -am '0.0.4' && git push
+git tag v0.0.4 && git push --tags
