@@ -4,7 +4,6 @@ go 1.16
 
 require (
 	contrib.go.opencensus.io/exporter/zipkin v0.1.2
-	github.com/Zhanat87/go-kit-hello v0.0.0-20210715024313-3442d74b4f6c
 	github.com/go-kit/kit v0.11.0
 	github.com/openzipkin/zipkin-go v0.2.5
 	github.com/prometheus/client_golang v1.11.0
