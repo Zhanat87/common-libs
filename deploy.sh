@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+make vendor
 make tests
 make lint
 git add . && git commit -am '0.0.4' && git push
