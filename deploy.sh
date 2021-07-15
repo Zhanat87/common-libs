@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-make vendor
+go mod vendor
 make tests
 make lint
-git add . && git commit -am '0.0.6' && git push
-git tag v0.0.6 && git push --tags
+git add . && git commit -am '0.0.7' && git push
+git tag v0.0.7 && git push --tags

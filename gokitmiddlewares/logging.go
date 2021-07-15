@@ -18,7 +18,7 @@ func NewLogging(logger log.Logger, packageName string) Saver {
 func (s *Logging) Save(err error, begin time.Time, methodName string) {
 	if err != nil {
 		_ = s.logger.Log(
-			"method", s.packageName+"_" + methodName,
+			"method", s.packageName+"_"+methodName,
 			"took", time.Since(begin),
 			"err", err,
 		)
