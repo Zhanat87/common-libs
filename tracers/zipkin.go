@@ -1,12 +1,13 @@
 package tracers
 
 import (
+	"strconv"
+
 	oczipkin "contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
 	httpreporter "github.com/openzipkin/zipkin-go/reporter/http"
 	"go.opencensus.io/trace"
-	"strconv"
 )
 
 const endpointURL = "http://localhost:9411/api/v2/spans"
