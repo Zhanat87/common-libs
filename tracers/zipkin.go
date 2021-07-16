@@ -37,7 +37,7 @@ func NewZipkinTracer(serviceName, port string) (*zipkin.Tracer, error) {
 	return t, err
 }
 
-func NewZipkinTracerAndHttpReporter(serviceName, hostPort string) (*zipkin.Tracer, error, zipkinreporter.Reporter) {
+func NewZipkinTracerAndHttpReporter(serviceName, hostPort string) (*zipkin.Tracer, zipkinreporter.Reporter, error) {
 	// Set-up our OpenCensus instrumentation with Zipkin backend
 	reporter := httpreporter.NewReporter(endpointURL)
 	localEndpoint, _ := zipkin.NewEndpoint(serviceName, hostPort) // hello, ":0"
@@ -48,5 +48,5 @@ func NewZipkinTracerAndHttpReporter(serviceName, hostPort string) (*zipkin.Trace
 	trace.RegisterExporter(exporter)
 	tracer, err := zipkin.NewTracer(reporter)
 
-	return tracer, err, reporter
+	return tracer, reporter, err
 }
