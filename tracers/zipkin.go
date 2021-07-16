@@ -6,6 +6,7 @@ import (
 	oczipkin "contrib.go.opencensus.io/exporter/zipkin"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
+	zipkinreporter "github.com/openzipkin/zipkin-go/reporter"
 	httpreporter "github.com/openzipkin/zipkin-go/reporter/http"
 	"go.opencensus.io/trace"
 )
@@ -36,16 +37,16 @@ func NewZipkinTracer(serviceName, port string) (*zipkin.Tracer, error) {
 	return t, err
 }
 
-func NewZipkinTracer2(serviceName, hostPort string) (*zipkin.Tracer, error) {
+func NewZipkinTracerAndHttpReporter(serviceName, hostPort string) (*zipkin.Tracer, error, zipkinreporter.Reporter) {
 	// Set-up our OpenCensus instrumentation with Zipkin backend
 	reporter := httpreporter.NewReporter(endpointURL)
 	localEndpoint, _ := zipkin.NewEndpoint(serviceName, hostPort) // hello, ":0"
 	exporter := oczipkin.NewExporter(reporter, localEndpoint)
-	defer reporter.Close()
 	// Always sample our traces for this demo.
 	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
 	// Register our trace exporter.
 	trace.RegisterExporter(exporter)
+	tracer, err := zipkin.NewTracer(reporter)
 
-	return zipkin.NewTracer(reporter)
+	return tracer, err, reporter
 }
