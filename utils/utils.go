@@ -66,7 +66,7 @@ func GetContextInternals(label string, ctx interface{}, inner bool) {
 	println()
 }
 
-func GetTraceIDFromContext(ctx context.Context, prefix string) string {
+func GetTraceIDAndSpanNameFromContext(ctx context.Context, prefix string) (string, string) {
 	contextValues := reflect.ValueOf(ctx).Elem()
 	contextKeys := reflect.TypeOf(ctx).Elem()
 	if contextKeys.Kind() == reflect.Struct {
@@ -79,11 +79,11 @@ func GetTraceIDFromContext(ctx context.Context, prefix string) string {
 				reflectValueInterfaceString := fmt.Sprintf("%s", reflectValue.Interface())
 				reflectValueInterfaceSlice := strings.Split(reflectValueInterfaceString, " ")
 				if reflectValueInterfaceSlice[0] == "span" && strings.HasPrefix(reflectValueInterfaceSlice[2], "\""+prefix) {
-					return reflectValueInterfaceSlice[1]
+					return reflectValueInterfaceSlice[1], reflectValueInterfaceSlice[2]
 				}
 			}
 		}
 	}
 
-	return ""
+	return "", ""
 }
