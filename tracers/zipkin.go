@@ -13,6 +13,11 @@ import (
 
 const endpointURL = "http://localhost:9411/api/v2/spans"
 
+var (
+	ZipkinTracer   *zipkin.Tracer
+	ZipkinReporter zipkinreporter.Reporter
+)
+
 func NewZipkinTracer(serviceName, port string) (*zipkin.Tracer, error) {
 	portInt, _ := strconv.Atoi(port)
 	portUint16 := uint16(portInt)
@@ -49,4 +54,16 @@ func NewZipkinTracerAndHTTPReporter(serviceName, hostPort string) (*zipkin.Trace
 	tracer, err := zipkin.NewTracer(reporter)
 
 	return tracer, reporter, err
+}
+
+func InitZipkinTracerAndZipkinHTTPReporter(serviceName, hostPort string) error {
+	ZipkinReporter = httpreporter.NewReporter(endpointURL)
+	localEndpoint, _ := zipkin.NewEndpoint(serviceName, hostPort)
+	exporter := oczipkin.NewExporter(ZipkinReporter, localEndpoint)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+	trace.RegisterExporter(exporter)
+	var zipkinTracerError error
+	ZipkinTracer, zipkinTracerError = zipkin.NewTracer(ZipkinReporter)
+
+	return zipkinTracerError
 }
