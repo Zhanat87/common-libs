@@ -3,5 +3,5 @@
 go mod vendor
 make tests
 make lint
-git add . && git commit -am '0.1.5' && git push
-git tag v0.1.5 && git push --tags
+git add . && git commit -am '0.1.6' && git push
+git tag v0.1.6 && git push --tags
