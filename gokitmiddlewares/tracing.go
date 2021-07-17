@@ -9,8 +9,10 @@ import (
 	"github.com/openzipkin/zipkin-go/model"
 )
 
+const TraceEndpointNamePrefix = "gokit:endpoint "
+
 func GetTraceEndpoint(endPoint endpoint.Endpoint, name string) endpoint.Endpoint {
-	return kitoc.TraceEndpoint("gokit:endpoint " + name)(endPoint)
+	return kitoc.TraceEndpoint(TraceEndpointNamePrefix + name)(endPoint)
 }
 
 func TraceEndpoint(tracer *zipkin.Tracer, name string) endpoint.Middleware {
