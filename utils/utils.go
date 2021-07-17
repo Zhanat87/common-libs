@@ -78,8 +78,8 @@ func GetTraceIDAndSpanNameFromContext(ctx context.Context, prefix string) (strin
 			if reflectField.Name == "val" {
 				reflectValueInterfaceString := fmt.Sprintf("%s", reflectValue.Interface())
 				reflectValueInterfaceSlice := strings.Split(reflectValueInterfaceString, " ")
-				if reflectValueInterfaceSlice[0] == "span" && strings.HasPrefix(reflectValueInterfaceSlice[2], "\""+prefix) {
-					return reflectValueInterfaceSlice[1], reflectValueInterfaceSlice[2]
+				if reflectValueInterfaceSlice[0] == "span" && reflectValueInterfaceSlice[2] == prefix {
+					return reflectValueInterfaceSlice[1], strings.Join(reflectValueInterfaceSlice[2:], " ")
 				}
 			}
 		}
