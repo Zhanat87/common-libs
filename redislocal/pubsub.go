@@ -49,4 +49,5 @@ ch := sub.Channel()
 
 https://www.programmersought.com/article/50064833942/
 https://stackoverflow.com/questions/61967369/unsubscribe-from-redis-doesnt-seem-to-work
+https://dev.to/jeroendk/how-to-use-redis-pub-sub-in-go-chat-application-part-3-2h4c
 */
