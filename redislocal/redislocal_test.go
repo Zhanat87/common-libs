@@ -1,17 +1,18 @@
 package redislocal_test
 
 import (
+	"context"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/Zhanat87/common-libs/contracts"
-
-	"github.com/Zhanat87/common-libs/contracts"
-
 	"github.com/Zhanat87/common-libs/redislocal"
 	"github.com/go-redis/redis/v8"
 	. "github.com/smartystreets/goconvey/convey"
 )
+
+var ctx context.Context
 
 func TestMain(m *testing.M) {
 	mySetupFunction()
@@ -22,6 +23,7 @@ func TestMain(m *testing.M) {
 
 func mySetupFunction() {
 	println("start redislocal package testing")
+	ctx = context.Background()
 }
 
 func myTeardownFunction() {
@@ -57,6 +59,42 @@ func TestCache(t *testing.T) {
 
 		cache := redislocal.NewCache(redisClient)
 		So(cache, ShouldImplement, (*contracts.Cache)(nil))
+
+		key := "test"
+		durationInSeconds := 1 * time.Second
+		value := "test value"
+
+		res, err := cache.Get(ctx, key)
+		So(res, ShouldBeEmpty)
+		So(err, ShouldEqual, redis.Nil)
+
+		err = cache.Set(ctx, key, value, durationInSeconds)
+		So(err, ShouldBeNil)
+
+		res, err = cache.Get(ctx, key)
+		So(err, ShouldBeNil)
+		So(res, ShouldEqual, value)
+
+		ok, err := cache.Exists(ctx, key)
+		So(err, ShouldBeNil)
+		So(ok, ShouldBeTrue)
+
+		time.Sleep(durationInSeconds + time.Millisecond*22)
+
+		ok, err = cache.Exists(ctx, key)
+		So(err, ShouldBeNil)
+		So(ok, ShouldBeFalse)
+
+		deletedCount, err := cache.Delete(ctx, key)
+		So(err, ShouldBeNil)
+		So(deletedCount, ShouldBeZeroValue)
+
+		err = cache.Set(ctx, key, value, durationInSeconds)
+		So(err, ShouldBeNil)
+
+		deletedCount, err = cache.Delete(ctx, key)
+		So(err, ShouldBeNil)
+		So(deletedCount, ShouldEqual, 1)
 	})
 }
 
