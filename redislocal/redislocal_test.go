@@ -136,17 +136,19 @@ func TestPubSub(t *testing.T) {
 				select {
 				case msg, ok := <-subscribeRes.Channel():
 					if !ok {
-						break
+						errsChan <- nil
+
+						return
 					}
 					fmt.Println("read message", msg.Payload, msg.Channel)
 				case <-timeOut:
 					dateTime, _ := utils.GetCurrentDateTime("Asia/Almaty")
 					fmt.Println("time out at: " + dateTime)
 					errsChan <- subscribeRes.Close()
+
 					return
 				}
 			}
-			errsChan <- nil
 		}()
 		errCount := 0
 		for err := range errsChan {
