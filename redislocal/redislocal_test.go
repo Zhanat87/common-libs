@@ -61,14 +61,14 @@ func TestCache(t *testing.T) {
 		So(cache, ShouldImplement, (*contracts.Cache)(nil))
 
 		key := "test"
-		durationInSeconds := 1 * time.Second
+		duration := 1 * time.Second
 		value := "test value"
 
 		res, err := cache.Get(ctx, key)
 		So(res, ShouldBeEmpty)
 		So(err, ShouldEqual, redis.Nil)
 
-		err = cache.Set(ctx, key, value, durationInSeconds)
+		err = cache.Set(ctx, key, value, duration)
 		So(err, ShouldBeNil)
 
 		res, err = cache.Get(ctx, key)
@@ -79,7 +79,7 @@ func TestCache(t *testing.T) {
 		So(err, ShouldBeNil)
 		So(ok, ShouldBeTrue)
 
-		time.Sleep(durationInSeconds + time.Millisecond*22)
+		time.Sleep(duration + time.Millisecond*22)
 
 		ok, err = cache.Exists(ctx, key)
 		So(err, ShouldBeNil)
@@ -89,7 +89,7 @@ func TestCache(t *testing.T) {
 		So(err, ShouldBeNil)
 		So(deletedCount, ShouldBeZeroValue)
 
-		err = cache.Set(ctx, key, value, durationInSeconds)
+		err = cache.Set(ctx, key, value, duration)
 		So(err, ShouldBeNil)
 
 		deletedCount, err = cache.Delete(ctx, key)
