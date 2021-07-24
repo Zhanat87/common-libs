@@ -7,12 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Zhanat87/common-libs/utils"
-
-	"github.com/Zhanat87/common-libs/utils"
-
 	"github.com/Zhanat87/common-libs/contracts"
 	"github.com/Zhanat87/common-libs/redislocal"
+	"github.com/Zhanat87/common-libs/utils"
 	"github.com/go-redis/redis/v8"
 	. "github.com/smartystreets/goconvey/convey"
 )
