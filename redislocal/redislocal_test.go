@@ -2,9 +2,14 @@ package redislocal_test
 
 import (
 	"context"
+	"fmt"
 	"os"
 	"testing"
 	"time"
+
+	"github.com/Zhanat87/common-libs/utils"
+
+	"github.com/Zhanat87/common-libs/utils"
 
 	"github.com/Zhanat87/common-libs/contracts"
 	"github.com/Zhanat87/common-libs/redislocal"
@@ -105,5 +110,56 @@ func TestPubSub(t *testing.T) {
 
 		pubSub := redislocal.NewPubSub(redisClient)
 		So(pubSub, ShouldImplement, (*contracts.PubSub)(nil))
+
+		goroutinesCount := 2
+		errsChan := make(chan error, goroutinesCount)
+		pubSubChannel := "test_pub_sub_channel"
+		go func() {
+			for i := 0; i < 3; i++ {
+				dateTime, err := utils.GetCurrentDateTime("Asia/Almaty")
+				if err != nil {
+					errsChan <- err
+
+					return
+				}
+				publishRes := pubSub.Publish(ctx, pubSubChannel, dateTime).(*redis.IntCmd)
+				if err := publishRes.Err(); err != nil {
+					errsChan <- err
+
+					return
+				}
+				time.Sleep(time.Second)
+			}
+			errsChan <- nil
+		}()
+		go func() {
+			subscribeRes := pubSub.Subscribe(ctx, pubSubChannel).(*redis.PubSub)
+			timeOut := time.After(5 * time.Second)
+			for {
+				select {
+				case msg, ok := <-subscribeRes.Channel():
+					if !ok {
+						break
+					}
+					fmt.Println("read message", msg.Payload, msg.Channel)
+				case <-timeOut:
+					dateTime, _ := utils.GetCurrentDateTime("Asia/Almaty")
+					fmt.Println("time out at: " + dateTime)
+					errsChan <- subscribeRes.Close()
+					return
+				default:
+				}
+			}
+			errsChan <- nil
+		}()
+		errCount := 0
+		for err := range errsChan {
+			errCount++
+			fmt.Printf("errsChan: %#v\r\n", err)
+			if errCount == goroutinesCount {
+				close(errsChan)
+			}
+		}
+		println("pub sub success")
 	})
 }

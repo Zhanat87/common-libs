@@ -5,8 +5,29 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 	"unsafe"
 )
+
+func GetCurrentDate(timeZone string) (string, error) {
+	loc, err := time.LoadLocation(timeZone)
+	if err != nil {
+		return "", err
+	}
+	now := time.Now().In(loc)
+
+	return now.Format("2006-01-02"), nil
+}
+
+func GetCurrentDateTime(timeZone string) (string, error) {
+	loc, err := time.LoadLocation(timeZone)
+	if err != nil {
+		return "", err
+	}
+	now := time.Now().In(loc)
+
+	return now.Format("2006-01-02 15:04:05"), nil
+}
 
 func PrintContextInternals(label string, ctx interface{}, inner bool) {
 	println()

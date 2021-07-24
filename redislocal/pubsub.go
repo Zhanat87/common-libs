@@ -16,15 +16,11 @@ func NewPubSub(client *redis.Client) contracts.PubSub {
 }
 
 func (s *pubSub) Publish(ctx context.Context, channel string, message interface{}) interface{} {
-	return nil
+	return s.client.Publish(ctx, channel, message)
 }
 
 func (s *pubSub) Subscribe(ctx context.Context, channels ...string) interface{} {
-	return nil
-}
-
-func (s *pubSub) Unsubscribe(ctx context.Context, channels ...string) error {
-	return nil
+	return s.client.Subscribe(ctx, channels...)
 }
 
 /*
@@ -50,4 +46,7 @@ default:
 }
 
 ch := sub.Channel()
+
+https://www.programmersought.com/article/50064833942/
+https://stackoverflow.com/questions/61967369/unsubscribe-from-redis-doesnt-seem-to-work
 */
