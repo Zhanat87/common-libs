@@ -12,7 +12,6 @@ var (
 	Client *redis.Client
 	client *redis.Client
 	once   sync.Once
-	err    error
 	ctx    = context.Background()
 )
 
