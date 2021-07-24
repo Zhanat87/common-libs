@@ -39,3 +39,7 @@ func InitClient(address, password string, db int) error {
 func InitDefaultClient() error {
 	return InitClient("localhost:6379", "", 0)
 }
+
+func GetDefaultInstance() *redis.Client {
+	return GetInstance("localhost:6379", "", 0)
+}
