@@ -147,7 +147,6 @@ func TestPubSub(t *testing.T) {
 					fmt.Println("time out at: " + dateTime)
 					errsChan <- subscribeRes.Close()
 					return
-				default:
 				}
 			}
 			errsChan <- nil
