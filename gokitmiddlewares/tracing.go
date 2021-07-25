@@ -10,6 +10,23 @@ import (
 	"github.com/openzipkin/zipkin-go/model"
 )
 
+type ZipkinTracing struct {
+	zipkinTracer *zipkin.Tracer
+	packageName  string
+}
+
+func NewZipkinTracing(zipkinTracer *zipkin.Tracer, packageName string) Tracer {
+	return &ZipkinTracing{zipkinTracer, packageName}
+}
+
+func (s *ZipkinTracing) Trace(ctx context.Context, methodName string) {
+	span, _ := s.zipkinTracer.StartSpanFromContext(
+		ctx,
+		s.packageName+" "+methodName,
+	)
+	defer span.Finish()
+}
+
 const TraceEndpointNamePrefix = "gokit:endpoint "
 
 func GetTraceEndpoint(endPoint endpoint.Endpoint, name string) endpoint.Endpoint {
