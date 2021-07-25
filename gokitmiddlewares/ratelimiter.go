@@ -11,3 +11,7 @@ import (
 func GetRateLimiterMiddleware(limiterBurst int) endpoint.Middleware {
 	return ratelimit.NewErroringLimiter(rate.NewLimiter(rate.Every(time.Second), limiterBurst))
 }
+
+func GetRateLimiterEndpoint(endPoint endpoint.Endpoint, limiterBurst int) endpoint.Endpoint {
+	return GetRateLimiterMiddleware(limiterBurst)(endPoint)
+}
