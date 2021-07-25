@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-kit/kit/endpoint"
 	kitoc "github.com/go-kit/kit/tracing/opencensus"
+	tracingzipkin "github.com/go-kit/kit/tracing/zipkin"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
 )
@@ -13,6 +14,10 @@ const TraceEndpointNamePrefix = "gokit:endpoint "
 
 func GetTraceEndpoint(endPoint endpoint.Endpoint, name string) endpoint.Endpoint {
 	return kitoc.TraceEndpoint(TraceEndpointNamePrefix + name)(endPoint)
+}
+
+func GetZipkinEndpoint(zipkinTracer *zipkin.Tracer, endPoint endpoint.Endpoint, name string) endpoint.Endpoint {
+	return tracingzipkin.TraceEndpoint(zipkinTracer, TraceEndpointNamePrefix+name)(endPoint)
 }
 
 func TraceEndpoint(tracer *zipkin.Tracer, name string) endpoint.Middleware {
