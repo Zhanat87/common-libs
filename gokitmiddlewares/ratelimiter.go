@@ -8,10 +8,10 @@ import (
 	"golang.org/x/time/rate"
 )
 
-func GetRateLimiterMiddleware(limiterBurst int) endpoint.Middleware {
-	return ratelimit.NewErroringLimiter(rate.NewLimiter(rate.Every(time.Second), limiterBurst))
+func GetRateLimiterMiddleware(limiterInterval time.Duration, limiterBurst int) endpoint.Middleware {
+	return ratelimit.NewErroringLimiter(rate.NewLimiter(rate.Every(limiterInterval), limiterBurst))
 }
 
-func GetRateLimiterEndpoint(endPoint endpoint.Endpoint, limiterBurst int) endpoint.Endpoint {
-	return GetRateLimiterMiddleware(limiterBurst)(endPoint)
+func GetRateLimiterEndpoint(endPoint endpoint.Endpoint, limiterInterval time.Duration, limiterBurst int) endpoint.Endpoint {
+	return GetRateLimiterMiddleware(limiterInterval, limiterBurst)(endPoint)
 }
