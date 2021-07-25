@@ -19,12 +19,11 @@ func NewZipkinTracing(zipkinTracer *zipkin.Tracer, packageName string) Tracer {
 	return &ZipkinTracing{zipkinTracer, packageName}
 }
 
-func (s *ZipkinTracing) Trace(ctx context.Context, methodName string) {
-	span, _ := s.zipkinTracer.StartSpanFromContext(
+func (s *ZipkinTracing) Trace(ctx context.Context, methodName string) (zipkin.Span, context.Context) {
+	return s.zipkinTracer.StartSpanFromContext(
 		ctx,
 		s.packageName+" "+methodName,
 	)
-	defer span.Finish()
 }
 
 const TraceEndpointNamePrefix = "gokit:endpoint "
