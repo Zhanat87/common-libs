@@ -12,6 +12,7 @@ require (
 	github.com/smartystreets/assertions v1.0.1 // indirect
 	github.com/smartystreets/goconvey v1.6.4
 	go.opencensus.io v0.23.0
+	golang.org/x/time v0.0.0-20200416051211-89c76fbcd5d1
 	google.golang.org/grpc v1.38.0
 	google.golang.org/protobuf v1.27.1
 )
