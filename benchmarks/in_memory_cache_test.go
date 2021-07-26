@@ -23,8 +23,7 @@ func inMemoryCacheSGED(cache contracts.InMemoryCache) {
 func BenchmarkInMemoryCacheFastCache(b *testing.B) { // 1
 	startedAt := time.Now()
 	defer utils.PrintBenchReport(b, startedAt, "InMemoryCache fastCache")
-	fastCache := fastcachelocal.GetDefaultFastCache()
-	inMemoryCache := fastcachelocal.NewInMemoryCache(fastCache)
+	inMemoryCache := fastcachelocal.NewInMemoryCache(fastcachelocal.GetDefaultFastCache())
 	for i := 0; i < b.N; i++ {
 		inMemoryCacheSGED(inMemoryCache)
 	}
@@ -46,8 +45,7 @@ func BenchmarkInMemoryCacheBigCache(b *testing.B) { // 2
 func BenchmarkInMemoryCacheFreeCache(b *testing.B) { // 3
 	startedAt := time.Now()
 	defer utils.PrintBenchReport(b, startedAt, "InMemoryCache freeCache")
-	freeCache := freecachelocal.GetDefaultFreeCache()
-	inMemoryCache := freecachelocal.NewInMemoryCache(freeCache)
+	inMemoryCache := freecachelocal.NewInMemoryCache(freecachelocal.GetDefaultFreeCache())
 	for i := 0; i < b.N; i++ {
 		inMemoryCacheSGED(inMemoryCache)
 	}
