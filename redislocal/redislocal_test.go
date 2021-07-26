@@ -30,6 +30,11 @@ func mySetupFunction() {
 
 func myTeardownFunction() {
 	println("success end redislocal package testing")
+	err := redislocal.Client.Close()
+	if err != nil {
+		panic(err)
+	}
+	println("success redis close")
 }
 
 func TestGetInstance(t *testing.T) {

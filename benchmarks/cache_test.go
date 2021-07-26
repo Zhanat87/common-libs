@@ -43,7 +43,9 @@ func BenchmarkCacheBigCache(b *testing.B) { // 1
 func BenchmarkCacheRedis(b *testing.B) { // 2
 	startedAt := time.Now()
 	defer utils.PrintBenchReport(b, startedAt, "cache redis")
-	cache := redislocal.NewCache(redislocal.GetDefaultInstance())
+	client := redislocal.GetDefaultInstance()
+	cache := redislocal.NewCache(client)
+	defer client.Close()
 	// задать пропускную способность за одну итерацию в байтах
 	// при помощи метода b.SetBytes(n int64)
 	// b.SetBytes(2)
