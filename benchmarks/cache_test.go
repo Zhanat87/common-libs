@@ -21,12 +21,26 @@ func cacheSGED(cache contracts.Cache, value interface{}) {
 	cache.Delete(ctx, key) // nolint
 }
 
+func BenchmarkCacheBigCache(b *testing.B) { // 1
+	startedAt := time.Now()
+	defer utils.PrintBenchReport(b, startedAt, "cache bigCache")
+	bigCache, err := bigcachelocal.GetDefaultBigCache()
+	if err != nil {
+		b.Error(err)
+	}
+	cache := bigcachelocal.NewCache(bigCache)
+	value := []byte("test value")
+	for i := 0; i < b.N; i++ {
+		cacheSGED(cache, value)
+	}
+}
+
 // https://habr.com/ru/post/268585/
 // go test -bench=. -benchmem -benchtime=4s -timeout 30m benchmarks/cache_test.go
 // go test -bench=. benchmarks/cache_test.go
 // cd benchmarks && go test -bench CacheRedis -run=^$
 // go test -bench=. -benchmem -benchtime=4s -timeout 30m benchmarks/*_test.go
-func BenchmarkCacheRedis(b *testing.B) {
+func BenchmarkCacheRedis(b *testing.B) { // 2
 	startedAt := time.Now()
 	defer utils.PrintBenchReport(b, startedAt, "cache redis")
 	cache := redislocal.NewCache(redislocal.GetDefaultInstance())
@@ -70,18 +84,4 @@ func BenchmarkCacheRedis(b *testing.B) {
 		170 B/op (количество байт памяти за итерацию)
 		220 allocs/op (количество аллокаций памяти за итерацию)
 	*/
-}
-
-func BenchmarkCacheBigCache(b *testing.B) {
-	startedAt := time.Now()
-	defer utils.PrintBenchReport(b, startedAt, "cache bigCache")
-	bigCache, err := bigcachelocal.GetDefaultBigCache()
-	if err != nil {
-		b.Error(err)
-	}
-	cache := bigcachelocal.NewCache(bigCache)
-	value := []byte("test value")
-	for i := 0; i < b.N; i++ {
-		cacheSGED(cache, value)
-	}
 }
