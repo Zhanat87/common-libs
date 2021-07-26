@@ -161,3 +161,23 @@ func TestPubSub(t *testing.T) {
 		println("pub sub success")
 	})
 }
+
+func cacheSGED(cache contracts.Cache) {
+	key := "test"
+	duration := 1 * time.Second
+	value := "test value"
+	cache.Set(ctx, key, value, duration)
+	cache.Get(ctx, key)
+	cache.Exists(ctx, key)
+	cache.Delete(ctx, key)
+}
+
+func BenchmarkCache(b *testing.B) {
+	cache := redislocal.NewCache(redislocal.GetDefaultInstance())
+	stopwatch := time.Now()
+	for i := 0; i < b.N; i++ {
+		cacheSGED(cache)
+	}
+	elapsed := time.Since(stopwatch)
+	fmt.Printf("\nBenchmarkCache\nElapsed: %s\nSGED per second: %f\n", elapsed, float64(b.N)/elapsed.Seconds())
+}
