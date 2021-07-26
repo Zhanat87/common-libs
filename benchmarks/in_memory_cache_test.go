@@ -7,8 +7,6 @@ import (
 
 	"github.com/Zhanat87/common-libs/freecachelocal"
 
-	"github.com/Zhanat87/common-libs/freecachelocal"
-
 	"github.com/Zhanat87/common-libs/bigcachelocal"
 	"github.com/Zhanat87/common-libs/contracts"
 	"github.com/Zhanat87/common-libs/fastcachelocal"
@@ -17,10 +15,10 @@ import (
 
 func inMemoryCacheSGED(cache contracts.InMemoryCache) {
 	key := "test"
-	cache.Set(key, []byte("test value"))
-	cache.Get(key)
-	cache.Exists(key)
-	cache.Delete(key)
+	cache.Set(key, []byte("test value")) // nolint
+	cache.Get(key) // nolint
+	cache.Exists(key) // nolint
+	cache.Delete(key) // nolint
 }
 
 func BenchmarkInMemoryCacheBigCache(b *testing.B) {

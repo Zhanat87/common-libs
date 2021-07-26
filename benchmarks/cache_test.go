@@ -15,10 +15,10 @@ func cacheSGED(cache contracts.Cache, value interface{}) {
 	key := "test"
 	duration := 1 * time.Second
 	ctx := context.Background()
-	cache.Set(ctx, key, value, duration)
-	cache.Get(ctx, key)
-	cache.Exists(ctx, key)
-	cache.Delete(ctx, key)
+	cache.Set(ctx, key, value, duration) // nolint
+	cache.Get(ctx, key) // nolint
+	cache.Exists(ctx, key) // nolint
+	cache.Delete(ctx, key) // nolint
 }
 
 // https://habr.com/ru/post/268585/

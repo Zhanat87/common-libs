@@ -14,9 +14,7 @@ func NewInMemoryCache(freeCache *freecache.Cache) contracts.InMemoryCache {
 }
 
 func (s *inMemoryCache) Set(key string, value []byte) error {
-	s.freeCache.Set([]byte(key), value, 0)
-
-	return nil
+	return s.freeCache.Set([]byte(key), value, 0)
 }
 
 func (s *inMemoryCache) Get(key string) ([]byte, error) {

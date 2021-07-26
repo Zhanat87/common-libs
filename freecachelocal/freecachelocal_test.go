@@ -4,11 +4,8 @@ import (
 	"os"
 	"testing"
 
-	"github.com/Zhanat87/common-libs/utils"
-
-	"github.com/Zhanat87/common-libs/utils"
-
 	"github.com/Zhanat87/common-libs/freecachelocal"
+	"github.com/Zhanat87/common-libs/utils"
 	"github.com/coocood/freecache"
 	. "github.com/smartystreets/goconvey/convey"
 )

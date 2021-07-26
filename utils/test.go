@@ -8,7 +8,7 @@ import (
 
 	"github.com/Zhanat87/common-libs/contracts"
 	"github.com/allegro/bigcache/v3"
-	. "github.com/smartystreets/goconvey/convey"
+	. "github.com/smartystreets/goconvey/convey" // nolint
 )
 
 func PrintBenchReport(b *testing.B, startedAt time.Time, cacheBackend string) {
