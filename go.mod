@@ -4,6 +4,9 @@ go 1.16
 
 require (
 	contrib.go.opencensus.io/exporter/zipkin v0.1.2
+	github.com/VictoriaMetrics/fastcache v1.6.0
+	github.com/allegro/bigcache/v3 v3.0.0
+	github.com/coocood/freecache v1.1.1
 	github.com/go-kit/kit v0.11.0
 	github.com/go-redis/redis/v8 v8.11.0
 	github.com/openzipkin/zipkin-go v0.2.5

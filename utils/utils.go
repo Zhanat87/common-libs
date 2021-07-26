@@ -9,6 +9,19 @@ import (
 	"unsafe"
 )
 
+const (
+	MegaByte = 1048576
+	GigaByte = 1000 * MegaByte
+)
+
+func GetMegabytes(mb int) int {
+	return mb * MegaByte
+}
+
+func GetGigabytes(gb int) int {
+	return gb * GigaByte
+}
+
 func GetCurrentDate(timeZone string) (string, error) {
 	loc, err := time.LoadLocation(timeZone)
 	if err != nil {
