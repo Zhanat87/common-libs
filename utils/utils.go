@@ -2,6 +2,7 @@ package utils
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"reflect"
 	"strings"
@@ -13,6 +14,15 @@ const (
 	MegaByte = 1048576
 	GigaByte = 1000 * MegaByte
 )
+
+func GetErrorFromErrors(errs []error) error {
+	errorText := ""
+	for i, err := range errs {
+		errorText += fmt.Sprintf("#%d %#v\r\n", i, err)
+	}
+
+	return errors.New(errorText)
+}
 
 func GetMegabytes(mb int) int {
 	return mb * MegaByte
