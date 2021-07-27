@@ -94,6 +94,13 @@ func InitZipkinTracerAsOpentracingGlobalTracerAndZipkinHTTPReporter(serviceName,
 	var zipkinTracerError error
 	ZipkinTracer, zipkinTracerError = zipkin.NewTracer(ZipkinReporter)
 	opentracing.SetGlobalTracer(zipkinot.Wrap(ZipkinTracer))
+	/*
+		https://github.com/openzipkin-contrib/zipkin-go-opentracing
+		https://github.com/opentracing/opentracing-go
+		https://opentracing.io/guides/golang/quick-start/
+			span := opentracing.StartSpan("market GetAllActiveMarkets")
+			defer span.Finish()
+	*/
 
 	return zipkinTracerError
 }
