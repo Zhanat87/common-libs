@@ -9,6 +9,8 @@ require (
 	github.com/coocood/freecache v1.1.1
 	github.com/go-kit/kit v0.11.0
 	github.com/go-redis/redis/v8 v8.11.0
+	github.com/opentracing/opentracing-go v1.2.0
+	github.com/openzipkin-contrib/zipkin-go-opentracing v0.4.5
 	github.com/openzipkin/zipkin-go v0.2.5
 	github.com/prometheus/client_golang v1.11.0
 	github.com/sirupsen/logrus v1.8.1

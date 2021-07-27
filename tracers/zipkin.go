@@ -4,6 +4,8 @@ import (
 	"strconv"
 
 	oczipkin "contrib.go.opencensus.io/exporter/zipkin"
+	opentracing "github.com/opentracing/opentracing-go"
+	zipkinot "github.com/openzipkin-contrib/zipkin-go-opentracing"
 	"github.com/openzipkin/zipkin-go"
 	"github.com/openzipkin/zipkin-go/model"
 	zipkinreporter "github.com/openzipkin/zipkin-go/reporter"
@@ -17,6 +19,21 @@ var (
 	ZipkinTracer   *zipkin.Tracer
 	ZipkinReporter zipkinreporter.Reporter
 )
+
+func SetZipkinTracerAsOpentracingGlobalTracer(serviceName, hostPort string) (zipkinreporter.Reporter, error) {
+	// Set-up our OpenCensus instrumentation with Zipkin backend
+	reporter := httpreporter.NewReporter(endpointURL)
+	localEndpoint, _ := zipkin.NewEndpoint(serviceName, hostPort) // hello, ":0"
+	exporter := oczipkin.NewExporter(reporter, localEndpoint)
+	// Always sample our traces for this demo.
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+	// Register our trace exporter.
+	trace.RegisterExporter(exporter)
+	tracer, err := zipkin.NewTracer(reporter)
+	opentracing.SetGlobalTracer(zipkinot.Wrap(tracer))
+
+	return reporter, err
+}
 
 func NewZipkinTracer(serviceName, port string) (*zipkin.Tracer, error) {
 	portInt, _ := strconv.Atoi(port)
