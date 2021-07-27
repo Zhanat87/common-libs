@@ -84,3 +84,16 @@ func InitZipkinTracerAndZipkinHTTPReporter(serviceName, hostPort string) error {
 
 	return zipkinTracerError
 }
+
+func InitZipkinTracerAsOpentracingGlobalTracerAndZipkinHTTPReporter(serviceName, hostPort string) error {
+	ZipkinReporter = httpreporter.NewReporter(endpointURL)
+	localEndpoint, _ := zipkin.NewEndpoint(serviceName, hostPort)
+	exporter := oczipkin.NewExporter(ZipkinReporter, localEndpoint)
+	trace.ApplyConfig(trace.Config{DefaultSampler: trace.AlwaysSample()})
+	trace.RegisterExporter(exporter)
+	var zipkinTracerError error
+	ZipkinTracer, zipkinTracerError = zipkin.NewTracer(ZipkinReporter)
+	opentracing.SetGlobalTracer(zipkinot.Wrap(ZipkinTracer))
+
+	return zipkinTracerError
+}
