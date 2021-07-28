@@ -15,6 +15,25 @@ const (
 	GigaByte = 1000 * MegaByte
 )
 
+func ReadErrorsChannel(errorsChan chan error, goroutinesCount int) error {
+	var errorsCount int
+	var errors []error
+	for err := range errorsChan {
+		if err != nil {
+			errors = append(errors, err)
+		}
+		errorsCount++
+		if errorsCount == goroutinesCount {
+			close(errorsChan)
+		}
+	}
+	if len(errors) > 0 {
+		return GetErrorFromErrors(errors)
+	}
+
+	return nil
+}
+
 func GetErrorFromErrors(errs []error) error {
 	errorText := ""
 	for i, err := range errs {
