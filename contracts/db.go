@@ -2,6 +2,6 @@ package contracts
 
 import "context"
 
-type DB interface {
+type Transaction interface {
 	BeginTransaction(ctx context.Context) (interface{}, error)
 }
