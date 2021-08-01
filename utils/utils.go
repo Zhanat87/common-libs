@@ -27,14 +27,14 @@ func ReadErrorsChannel(errorsChan chan error, goroutinesCount int) error {
 			close(errorsChan)
 		}
 	}
-	if len(errors) > 0 {
-		return GetErrorFromErrors(errors)
-	}
 
-	return nil
+	return GetErrorFromErrors(errors)
 }
 
 func GetErrorFromErrors(errs []error) error {
+	if len(errs) == 0 {
+		return nil
+	}
 	errorText := ""
 	for i, err := range errs {
 		errorText += fmt.Sprintf("#%d %#v\r\n", i, err)
